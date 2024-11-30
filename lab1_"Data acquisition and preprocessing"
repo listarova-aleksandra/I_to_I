@@ -1,0 +1,75 @@
+import pandas as pd
+
+"""Создайте список music с 5 парами «имя вашего любимого исполнителя - название его
+песни».
+"""
+
+music = [('Kendrick Lamar', 'Count Me Out'),
+                ('Kanye West', 'Violent Crimes'),
+                ('Tyler, The Creator', 'St.Chroma'),
+                ('Frank Ocean', 'Solo'),
+                ('SZA', 'Good Days')]
+
+entries = ['artist', 'track']
+
+playlist = pd.DataFrame(music, columns=entries)
+playlist
+
+df = pd.read_csv('music_log.csv')
+
+df.info()
+
+music_head = df.head(5)
+music_head
+
+music_tail = df.tail(10)
+music_tail
+
+shape_table = df.shape
+print(f'Размер таблицы: {shape_table}')
+
+observations_table = shape_table[0]
+print(f'Количество наблюдений: {observations_table}')
+
+observations_info_table = observations_table
+if observations_info_table == observations_table:
+    print(f'Решение верно, количество наблюдений равно {observations_table}')
+else:
+    print('Решение неверно, проверьте еще раз!')
+
+genre_fight = df[['genre', 'Artist']]
+genre_pop = (df['genre'] == 'pop').sum()
+print(f'Число прослушанных треков в жанре поп равно {genre_pop}')
+
+genre_rock = (df['genre'] == 'rock').sum()
+print(f'Число прослушанных треков в жанре рок равно {genre_rock}')
+
+if genre_pop > genre_rock:
+    print('Попса forever!')
+elif genre_pop < genre_rock:
+    print('Рок победил!')
+else:
+    print('Силы равны, но хип-хоп лучше!')
+
+rock = df[df['genre'] == 'rock']
+rock_time = rock['total play']
+rock_time
+
+rock_haters = (rock_time <= 5).sum()
+print(f'Количество пропущенных треков жанра рок равно: {rock_haters}')
+
+pop = df[df['genre'] == 'pop']
+pop_time = pop['total play']
+pop_time
+
+pop_haters = (pop_time <= 5).sum()
+print(f'Количество пропущенных треков жанра поп равно: {pop_haters}')
+
+rock_tracks_total = rock.shape[0]
+pop_tracks_total = pop.shape[0]
+
+rock_skip = (rock_haters / rock_tracks_total) * 100 if rock_tracks_total > 0 else 0
+pop_skip = (pop_haters / pop_tracks_total) * 100 if pop_tracks_total > 0 else 0
+
+print(f"Доля пропущенных композиций жанра рок равна: {rock_skip:.1f}%")
+print(f"Доля пропущенных композиций жанра поп равна: {pop_skip:.1f}%")
